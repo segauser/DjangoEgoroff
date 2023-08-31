@@ -1,11 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Static</title>
-</head>
-<body>
-    <h1>Приложение Гороскоп</h1>
-    <h2>Весы - 7-й знак</h2>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% load static %}
+{% load my_filter %}
+
+{% block css_additional %}
+    <link rel="stylesheet" href=" {% static 'horoscope/css/info.css' %}"> 
+{% endblock %}
+
+{% block title %} 
+    Гороскоп для {{ sign | capfirst }}
+{% endblock %}
+
+{% block content %}
+
+    <!-- "include 'includes/navbar.html' only" - Denied to see global variables -->
+    {% include 'includes/navbar.html'%}
+    <!-- Use self filter blog\horoscope\templatetags\my_filter.py "split"-->
+    <h1>{{description|split|first}}</h1>
+    {% if description is None %}
+        <h2>Вы ввели несуществующий знак - {{ sign | upper }}</h2>
+    {% else %}
+        <h2>{{ description|capfirst|safe }}</h2>
+    {% endif %}
+
+{% endblock %}
